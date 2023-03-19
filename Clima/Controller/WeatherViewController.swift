@@ -52,8 +52,8 @@ extension WeatherViewController: UITextFieldDelegate {
         if let city = searchTextField.text {
             weatherManager.fetchWeather(cityName: city)
         }
-        //test
+        
         searchTextField.text = ""
     }
     
-}
+} 
