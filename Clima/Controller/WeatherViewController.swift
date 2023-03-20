@@ -8,7 +8,7 @@
 
 import UIKit
 
-class WeatherViewController: UIViewController, WeatherManagerDelegate {
+class WeatherViewController: UIViewController {
 
     @IBOutlet weak var searchTextField: UITextField!
     @IBOutlet weak var conditionImageView: UIImageView!
@@ -57,12 +57,21 @@ extension WeatherViewController: UITextFieldDelegate {
         searchTextField.text = ""
     }
     
+}
+
+extension WeatherViewController: WeatherManagerDelegate {
+    
     func didUpdateWeather(_ weatherManager: WeatherManager, weather: WeatherModel) {
-        print(weather.temperature)
+        DispatchQueue.main.async {
+            self.temperatureLabel.text = weather.temperatureString
+            self.cityLabel.text = weather.cityname
+            self.conditionImageView.image = UIImage(systemName: weather.conditionName)
+        }
+        
     }
     
     func didFailWithError(error: Error) {
         print(error)
     }
     
-} 
+}
