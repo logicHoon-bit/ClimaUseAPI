@@ -7,6 +7,8 @@
 //
 
 import UIKit
+//import CoreLocation
+//import SnapKit
 
 class WeatherViewController: UIViewController {
 
@@ -16,23 +18,28 @@ class WeatherViewController: UIViewController {
     @IBOutlet weak var cityLabel: UILabel!
     
     var weatherManager = WeatherManager()
+   // let locationManager = CLLocationManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //locationManager.requestWhenInUseAuthorization()
         
         searchTextField.delegate = self
         weatherManager.delegate = self
     }
 
+}
+
+//MARK: - UITextFieldDelegate
+
+extension WeatherViewController: UITextFieldDelegate {
+    
     @IBAction func searchPressed(_ sender: UIButton) {
         searchTextField.endEditing(true)
         print(searchTextField.text!)
         
     }
-    
-}
-
-extension WeatherViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         searchTextField.endEditing(true)
@@ -59,6 +66,8 @@ extension WeatherViewController: UITextFieldDelegate {
     
 }
 
+//MARK: - WeatherManagerDelegate
+
 extension WeatherViewController: WeatherManagerDelegate {
     
     func didUpdateWeather(_ weatherManager: WeatherManager, weather: WeatherModel) {
@@ -67,7 +76,6 @@ extension WeatherViewController: WeatherManagerDelegate {
             self.cityLabel.text = weather.cityname
             self.conditionImageView.image = UIImage(systemName: weather.conditionName)
         }
-        
     }
     
     func didFailWithError(error: Error) {
