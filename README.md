@@ -9,17 +9,13 @@
         super.viewDidLoad()
         
         locationManager.delegate = self //위치를 요청하기전에 delegate 설정해야됨
-        locationManager.requestWhenInUseAuthorization()
+        locationManager.requestWhenInUseAuthorization() //디바이스 location 접근 허가요청
         locationManager.requestLocation() //일회성 주소 요청
         //locationManager.startUpdatingLocation()//연속성주소요청
-       
-        
-        searchTextField.delegate = self
-        weatherManager.delegate = self
-       
+   
     }
     
-    
+    //현재위치를 요청하는 버튼
     @IBAction func showLocationWeather(_ sender: UIButton) {
         locationManager.requestLocation()
     }
@@ -38,6 +34,7 @@ func locationManager(_ manager: CLLocationManager, didUpdateLocations locations:
             weatherManager.fetchWeather(latitude: lat, longitude: lon)
         }
     }
+    
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print(error)
