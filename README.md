@@ -1,54 +1,45 @@
+# ClimaUseApi
 
-![App Brewery Banner](Documentation/AppBreweryBanner.png)
+- viewDidLoad()
 
-#  Clima
-
-## Our Goal
-
-It’s time to take our app development skills to the next level. We’re going to introduce you to the wonderful world of Application Programming Interfaces (APIs) to grab live data from the internet. If you’re dreaming of making that Twitter-powered stock trading app then you’re about add some serious tools to your toolbelt!
-
-
-## What you will create
-
-By the end of the module, you will have made a beautiful, dark-mode enabled weather app. You'll be able to check the weather for the current location based on the GPS data from the iPhone as well as by searching for a city manually. 
-
-## What you will learn
-
-* How to create a dark-mode enabled app.
-* How to use vector images as image assets.
-* Learn to use the UITextField to get user input. 
-* Learn about the delegate pattern.
-* Swift protocols and extensions. 
-* Swift guard keyword. 
-* Swift computed properties.
-* Swift closures and completion handlers.
-* Learn to use URLSession to network and make HTTP requests.
-* Parse JSON with the native Encodable and Decodable protocols. 
-* Learn to use Grand Central Dispatch to fetch the main thread.
-* Learn to use Core Location to get the current location from the phone GPS. 
-
-### Condition Codes
+```swift
+ let locationManager = CLLocationManager()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        locationManager.delegate = self //위치를 요청하기전에 delegate 설정해야됨
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.requestLocation() //일회성 주소 요청
+        //locationManager.startUpdatingLocation()//연속성주소요청
+       
+        
+        searchTextField.delegate = self
+        weatherManager.delegate = self
+       
+    }
+    
+    
+    @IBAction func showLocationWeather(_ sender: UIButton) {
+        locationManager.requestLocation()
+    }
 ```
-switch conditionID {
-        case 200...232:
-            return "cloud.bolt"
-        case 300...321:
-            return "cloud.drizzle"
-        case 500...531:
-            return "cloud.rain"
-        case 600...622:
-            return "cloud.snow"
-        case 701...781:
-            return "cloud.fog"
-        case 800:
-            return "sun.max"
-        case 801...804:
-            return "cloud.bolt"
-        default:
-            return "cloud"
+
+- CLLocationManagerDelegate
+
+```swift
+func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if let location = locations.last {
+            locationManager.stopUpdatingLocation()
+            let lat = location.coordinate.latitude
+            let lon = location.coordinate.longitude
+            print("\(lat), \(lon)")
+            
+            weatherManager.fetchWeather(latitude: lat, longitude: lon)
         }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print(error)
+    }
 ```
-
->This is a companion project to The App Brewery's Complete App Development Bootcamp, check out the full course at [www.appbrewery.co](https://www.appbrewery.co/)
-
-![End Banner](Documentation/readme-end-banner.png)
